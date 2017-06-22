@@ -4,7 +4,7 @@
 require APPPATH . '/libraries/REST_Controller.php';
 use Restserver\Libraries\REST_Controller;
 
-class Student extends REST_Controller {
+class Myclass extends REST_Controller {
 
 	function __construct($config = 'rest') {
     	parent::__construct($config);
@@ -12,30 +12,29 @@ class Student extends REST_Controller {
     }
 
     // show data mahasiswa
-    function get_student() {
-        $student_id = $this->get('id');
-        if ($student_id == '') {
-            $student = $this->db->get('student')->result();
+    function get_class() {
+        $class_id = $this->get('id');
+        if ($class_id == '') {
+            $class = $this->db->get('class')->result();
         } 
         else {
-            $this->db->where('id', $student_id);
-            $student = $this->db->get('student')->result();
+            $this->db->where('id', $class_id);
+            $class = $this->db->get('class')->result();
         }
-        $this->response($student, 200);
+        $this->response($class, 200);
     }
 
     // Menambahkan daftar siswa
-    function post_student(){
+    function post_class(){
     	$data = array(
     		'id' => $this->post('id'),
-    		'name' => $this->post('name'),
-    		'email' => $this->post('email'), 
-    		'class_id' => $this->post('class_id'), 
+    		'name' => $this->post('name'), 
+    		'capacity' => $this->post('capacity'), 
     		'created_at' => $this->post('created_at'), 
     		'updated_at' => $this->post('updated_at') 
     	);
-    	$add_student = $this->db->insert('student', $data);
-    	if($add_student){
+    	$add_class = $this->db->insert('class', $data);
+    	if($add_class){
     		$this->response($data, 200);
     	}
     	else{
@@ -44,17 +43,16 @@ class Student extends REST_Controller {
     }
 
     // Mengedit daftar siswa
-    function put_student(){
-    	$student_id = $this->put('id');
+    function put_class(){
+    	$class_id = $this->put('id');
     	$data = array(
     		'id' => $this->post('id'),
-    		'name' => $this->post('name'),
-    		'email' => $this->post('email'), 
-    		'class_id' => $this->post('class_id'), 
+    		'name' => $this->post('name'), 
+    		'capacity' => $this->post('capacity'), 
     		'updated_at' => $this->post('updated_at')
     	);
-    	$this->db->where('id', $student_id);
-    	$update = $this->db->update('student', $data);
+    	$this->db->where('id', $class_id);
+    	$update = $this->db->update('class', $data);
     	if($update){
     		$this->response($data, 200);
     	}
@@ -62,10 +60,10 @@ class Student extends REST_Controller {
     		$this->response(array('status' => 'fail', 502));    			
     	}
     }
-    function delete_student(){
-    	$student_id = $this->delete('id');
-    	$this->db->where('id', $student_id);
-    	$delete = $this->db->delete('student');
+    function delete_class(){
+    	$class_id = $this->delete('id');
+    	$this->db->where('id', $class_id);
+    	$delete = $this->db->delete('class');
     	if($delete){
     		$this->response(array('status' => 'success', 201));
     	}
